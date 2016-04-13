@@ -1,0 +1,11 @@
+C:\Users\Customer\Desktop\ASI\bin\Debug\ASI.exe.config
+C:\Users\Customer\Desktop\ASI\bin\Debug\ASI.exe
+C:\Users\Customer\Desktop\ASI\bin\Debug\ASI.pdb
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.csprojResolveAssemblyReference.cache
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.MAIN.resources
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.Properties.Resources.resources
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.csproj.GenerateResource.Cache
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.exe
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.pdb
+C:\Users\Customer\Desktop\ASI\obj\Debug\ASI.Plotter.resources
+C:\Users\Customer\Desktop\ASI\bin\Debug\DynamicDataDisplay.dll
