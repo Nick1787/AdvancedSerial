@@ -1,5 +1,5 @@
 /*
- *        File: AdvSerialInterface.c
+ *        File: AdvancedSerial.c
  *      Author: Nick Dodds <Nick1787@gmail.com>
  * Description: An Adnvancer Serial Interface for Interfacing with Arduino
  * ----------------------------------------------------------------
@@ -16,66 +16,67 @@ AdvancedSerial::AdvancedSerial( HardwareSerial *Ref){
 }
 
 AdvancedSerial::~AdvancedSerial(){
-  for(int i=0; i<symbols.size(); i++){
-    LoggedSymbol sym = symbols.get(i);
-    symbols.remove(i);
+  for(int i=0; i<Signals.size(); i++){
+    LoggedSignal sym = Signals.get(i);
+    Signals.remove(i);
     delete &sym;
   }
 }
 
-void AdvancedSerial::addSymbol(String Name, bool * value){
-  LoggedSymbol * sym = new LoggedSymbol;
+void AdvancedSerial::addSignal(String Name, bool * value){
+  LoggedSignal * sym = new LoggedSignal;
   sym->Name = Name;
   //Name.toCharArray(sym->Name,25);
   sym->Type = asi_bool;
   sym->addr = value;
 
-  symbols.add(*sym);
+  Signals.add(*sym);
 }
 
-void AdvancedSerial::addSymbol(String Name, double * value){
-  LoggedSymbol * sym = new LoggedSymbol;
+void AdvancedSerial::addSignal(String Name, double * value){
+  LoggedSignal * sym = new LoggedSignal;
   sym->Name = Name;
   //Name.toCharArray(sym->Name,25);
   sym->Type = asi_double;
   sym->addr = value;
 
-  symbols.add(*sym);
+  Signals.add(*sym);
 }
 
-void AdvancedSerial::addSymbol(String Name, float * value){
-  LoggedSymbol * sym = new LoggedSymbol;
+void AdvancedSerial::addSignal(String Name, float * value){
+  LoggedSignal * sym = new LoggedSignal;
   sym->Name = Name;
   //Name.toCharArray(sym->Name,25);
   sym->Type = asi_float;
   sym->addr = value;
 
-  symbols.add(*sym);
+  Signals.add(*sym);
 }
 
-void AdvancedSerial::addSymbol(String Name, unsigned long * value){
-  LoggedSymbol * sym = new LoggedSymbol;
+void AdvancedSerial::addSignal(String Name, unsigned long * value){
+  LoggedSignal * sym = new LoggedSignal;
   sym->Name = Name;
   //Name.toCharArray(sym->Name,25);
   sym->Type = asi_ulong;
   sym->addr = value;
 
-  symbols.add(*sym);
+  Signals.add(*sym);
 }
 
-void AdvancedSerial::addSymbol(String Name, int * value){
-  LoggedSymbol * sym = new LoggedSymbol;
+void AdvancedSerial::addSignal(String Name, int * value){
+  LoggedSignal * sym = new LoggedSignal;
   sym->Name = Name;
   //Name.toCharArray(sym->Name,24);
   sym->Type = asi_int;
   sym->addr = value;
 
-  symbols.add(*sym);
+  Signals.add(*sym);
 }
 
 
 void AdvancedSerial::exec(){
   this->Read();
+  TransmitSignalData(123);
 }
 
 void AdvancedSerial::Read(){
@@ -103,17 +104,17 @@ void AdvancedSerial::ProcessInMsg(char * buffer){
    unsigned int msg_id = (buffer[10] << 24) | (buffer[9] << 16) | (buffer[8] << 8) | (buffer[7]);
    switch(msg_key){
       case(0xA0):{
-        Serial.println("Transmit Symbols!!");
-        this->TransmitSymbolList(msg_id);
+        Serial.println("Transmit Signals!!");
+        this->TransmitSignalList(msg_id);
       }
       case(0xA1):{
-        unsigned int symboldid = (buffer[8] << 24) | (buffer[7] << 16) | (buffer[6] << 8) | (buffer[5]);
-        this->TransmitSymbolData(msg_id);
+        unsigned int Signaldid = (buffer[8] << 24) | (buffer[7] << 16) | (buffer[6] << 8) | (buffer[5]);
+        this->TransmitSignalData(msg_id);
       }
    }
 }
 
-void AdvancedSerial::TransmitSymbolList(unsigned int msg_id){
+void AdvancedSerial::TransmitSignalList(unsigned int msg_id){
   SerialRef->write("#ASI:");
   byte msg_key = 0xB0;
   SerialRef->write(msg_key);
@@ -121,11 +122,12 @@ void AdvancedSerial::TransmitSymbolList(unsigned int msg_id){
   SerialRef->write(msg_id);
   SerialRef->write(":");
   
-  for(int i=0; i<symbols.size(); i++){
+  for(int i=0; i<Signals.size(); i++){
     intCvt.val = i;
     SerialRef->write(intCvt.bval,2);
-    LoggedSymbol sym = symbols.get(i);
+    LoggedSignal sym = Signals.get(i);
     SerialRef->print(sym.Name);
+    SerialRef->write('\0');
     
     switch(sym.Type){
       case(asi_bool):{
@@ -167,9 +169,10 @@ void AdvancedSerial::TransmitSymbolList(unsigned int msg_id){
     }
   }
   SerialRef->write("\r\n");
+  SerialRef->flush();
 }
 
-void AdvancedSerial::TransmitSymbolData(unsigned int msg_id){
+void AdvancedSerial::TransmitSignalData(unsigned int msg_id){
   SerialRef->write("#ASI:");
   byte msg_key = 0xB1;
   SerialRef->write(msg_key);
@@ -177,10 +180,10 @@ void AdvancedSerial::TransmitSymbolData(unsigned int msg_id){
   SerialRef->write(msg_id);
   SerialRef->write(":");
   
-  for(int i=0; i<symbols.size(); i++){
+  for(int i=0; i<Signals.size(); i++){
     intCvt.val = i;
     SerialRef->write(intCvt.bval,2);
-    LoggedSymbol sym = symbols.get(i);
+    LoggedSignal sym = Signals.get(i);
     switch(sym.Type){
       case(asi_bool):{
         boolCvt.val = *((bool*)sym.addr);
@@ -221,5 +224,6 @@ void AdvancedSerial::TransmitSymbolData(unsigned int msg_id){
     }
   }
   SerialRef->write("\r\n");
+  SerialRef->flush();
 }
 

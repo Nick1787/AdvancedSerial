@@ -1,5 +1,5 @@
 /*
- *        File: AdvSerialInterface.h
+*         File: AdvancedSerial.h
  *      Author: Nick Dodds <Nick1787@gmail.com>
  * Description: An Adnvancer Serial Interface for Interfacing with Arduino
  * ----------------------------------------------------------------
@@ -47,7 +47,7 @@
 #endif
 
 typedef enum dataType{ asi_bool, asi_byte, asi_short, asi_long, asi_ushort, asi_ulong, asi_int, asi_uint, asi_float, asi_double};
-struct LoggedSymbol{
+struct LoggedSignal{
   String Name;
   dataType Type;
   void * addr;
@@ -59,24 +59,24 @@ class AdvancedSerial{
 public:
 protected:
 private:
-  LinkedList<LoggedSymbol> symbols = LinkedList<LoggedSymbol>();
+  LinkedList<LoggedSignal> Signals = LinkedList<LoggedSignal>();
   HardwareSerial *SerialRef;
   int ReadBuffPos = 0;
   
 //functions
 public:
-  void addSymbol(String Name, bool * value);
-  void addSymbol(String Name, float * value);
-  void addSymbol(String Name, double * value);
-  void addSymbol(String Name, unsigned long * value);
-  void addSymbol(String Name, int * value);
+  void addSignal(String Name, bool * value);
+  void addSignal(String Name, float * value);
+  void addSignal(String Name, double * value);
+  void addSignal(String Name, unsigned long * value);
+  void addSignal(String Name, int * value);
   
   void exec();
   AdvancedSerial(HardwareSerial *SerialRef);
   ~AdvancedSerial();
   
-  void TransmitSymbolList(unsigned int MessageID);
-  void TransmitSymbolData(unsigned int MessageID);
+  void TransmitSignalList(unsigned int MessageID);
+  void TransmitSignalData(unsigned int MessageID);
 protected:
 private:
   void Read();
