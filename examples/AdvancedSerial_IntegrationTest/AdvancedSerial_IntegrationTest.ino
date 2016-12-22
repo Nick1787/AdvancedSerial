@@ -3,7 +3,7 @@
 #include "HardwareSerial_private.h"
 #include "AdvancedSerial.h"
 
-AdvancedSerial ASerial(&Serial);
+AdvancedSerial ASerial(&Serial, 500);
 
 int counter = 0;
 unsigned long timems = 0;
@@ -19,13 +19,13 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.print("Testing ASI...");
-  ASerial.addSymbol("Counter-int",&counter);
-  ASerial.addSymbol("time_ms-long",&timems);
-  ASerial.addSymbol("sine-float",&sinValue);
-  ASerial.addSymbol("cos-double",&cosValue);
-  ASerial.addSymbol("square-bool",&squarewv);
-  ASerial.addSymbol("Analog0-float",&A0_data);
-  ASerial.TransmitSymbolList(123);
+  ASerial.addSignal("Counter-int",&counter);
+  ASerial.addSignal("time_ms-long",&timems);
+  ASerial.addSignal("sine-float",&sinValue);
+  ASerial.addSignal("cos-double",&cosValue);
+  ASerial.addSignal("square-bool",&squarewv);
+  ASerial.addSignal("Analog0-float",&A0_data);
+  ASerial.TransmitSignalList(123);
 }
 
 
@@ -58,6 +58,6 @@ void loop() {
 
   if((curtime-writems)>100){
       writems = curtime;
-      ASerial.TransmitSymbolData(123);
+      ASerial.TransmitSignalData(123);
   }
 }

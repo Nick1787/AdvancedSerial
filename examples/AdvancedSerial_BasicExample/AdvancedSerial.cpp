@@ -9,68 +9,46 @@
  */
  
 #include "AdvancedSerial.h"
-#include "Arduino.h"s
-
-AdvancedSerial::AdvancedSerial( HardwareSerial *Ref){
-  SerialRef = Ref;
-}
+#include "Arduino.h"
 
 AdvancedSerial::~AdvancedSerial(){
-  for(int i=0; i<Signals.size(); i++){
-    LoggedSignal sym = Signals.get(i);
-    Signals.remove(i);
-    delete &sym;
-  }
+  delete Signals;
 }
 
 void AdvancedSerial::addSignal(String Name, bool * value){
-  LoggedSignal * sym = new LoggedSignal;
-  sym->Name = Name;
-  //Name.toCharArray(sym->Name,25);
-  sym->Type = asi_bool;
-  sym->addr = value;
-
-  Signals.add(*sym);
+  Signals[signalCount].Name = Name;
+  Signals[signalCount].Type = asi_bool;
+  Signals[signalCount].addr = value;
+  signalCount++;
 }
 
-void AdvancedSerial::addSignal(String Name, double * value){
-  LoggedSignal * sym = new LoggedSignal;
-  sym->Name = Name;
-  //Name.toCharArray(sym->Name,25);
-  sym->Type = asi_double;
-  sym->addr = value;
 
-  Signals.add(*sym);
+void AdvancedSerial::addSignal(String Name, double * value){
+  Signals[signalCount].Name = Name;
+  Signals[signalCount].Type = asi_double;
+  Signals[signalCount].addr = value;
+  signalCount++;
 }
 
 void AdvancedSerial::addSignal(String Name, float * value){
-  LoggedSignal * sym = new LoggedSignal;
-  sym->Name = Name;
-  //Name.toCharArray(sym->Name,25);
-  sym->Type = asi_float;
-  sym->addr = value;
-
-  Signals.add(*sym);
+  Signals[signalCount].Name = Name;
+  Signals[signalCount].Type = asi_float;
+  Signals[signalCount].addr = value;
+  signalCount++;
 }
 
 void AdvancedSerial::addSignal(String Name, unsigned long * value){
-  LoggedSignal * sym = new LoggedSignal;
-  sym->Name = Name;
-  //Name.toCharArray(sym->Name,25);
-  sym->Type = asi_ulong;
-  sym->addr = value;
-
-  Signals.add(*sym);
+  Signals[signalCount].Name = Name;
+  Signals[signalCount].Type = asi_ulong;
+  Signals[signalCount].addr = value;
+  signalCount++;
 }
 
 void AdvancedSerial::addSignal(String Name, int * value){
-  LoggedSignal * sym = new LoggedSignal;
-  sym->Name = Name;
-  //Name.toCharArray(sym->Name,24);
-  sym->Type = asi_int;
-  sym->addr = value;
-
-  Signals.add(*sym);
+  Signals[signalCount].Name = Name;
+  Signals[signalCount].Type = asi_int;
+  Signals[signalCount].addr = value;
+  signalCount++;
 }
 
 
@@ -122,10 +100,10 @@ void AdvancedSerial::TransmitSignalList(unsigned int msg_id){
   SerialRef->write(msg_id);
   SerialRef->write(":");
   
-  for(int i=0; i<Signals.size(); i++){
+  for(int i=0; i<signalCount; i++){
     intCvt.val = i;
     SerialRef->write(intCvt.bval,2);
-    LoggedSignal sym = Signals.get(i);
+    LoggedSignal sym = Signals[i];
     SerialRef->print(sym.Name);
     SerialRef->write('\0');
     
@@ -180,10 +158,10 @@ void AdvancedSerial::TransmitSignalData(unsigned int msg_id){
   SerialRef->write(msg_id);
   SerialRef->write(":");
   
-  for(int i=0; i<Signals.size(); i++){
+  for(int i=0; i<signalCount; i++){
     intCvt.val = i;
     SerialRef->write(intCvt.bval,2);
-    LoggedSignal sym = Signals.get(i);
+    LoggedSignal sym = Signals[i];
     switch(sym.Type){
       case(asi_bool):{
         boolCvt.val = *((bool*)sym.addr);

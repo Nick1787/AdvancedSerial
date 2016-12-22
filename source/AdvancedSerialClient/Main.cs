@@ -11,6 +11,7 @@ using System.IO.Ports;
 using System.Threading;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using AdvancedSerialClient;
 
 namespace AdvancedSerial
 {
@@ -19,6 +20,7 @@ namespace AdvancedSerial
         //Main Databse
         private RealTimeDB DB;
         private AdvancedSerial_API ASI;
+        private DataRecorder Recorder = null;
 
         //Buffers for REading Serial Data
         List<List<byte>> ASIData = new List<List<byte>>();
@@ -134,6 +136,7 @@ namespace AdvancedSerial
             this.btn_send.Location = new System.Drawing.Point(tb_send.Right + 5, tb_send.Top - 2);
 
             cb_autoscroll.Location = new System.Drawing.Point(tb_status.Left + 5, tb_status.Top - cb_autoscroll.Height - 5);
+            cbk_FilterASI.Location = new System.Drawing.Point(cb_autoscroll.Right + 5, cb_autoscroll.Top );
             cmb_eol.Location = new System.Drawing.Point(this.Width - 25 - cmb_eol.Width, cb_autoscroll.Top-2);
             lbl_eol.Location = new System.Drawing.Point(cmb_eol.Left - 5 - lbl_eol.Width, cmb_eol.Top + 2);
             this.rtb_serialdata.Height = cb_autoscroll.Top - tb_send.Bottom - 10;
@@ -350,7 +353,25 @@ namespace AdvancedSerial
             ASI.getSymbols(ComPort);
         }
 
+        private void oxyPlotterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataPlotter Plt = new DataPlotter(DB);
+            Plt.Show();
 
+        }
 
+        private void dataRecorderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if ((Recorder == null) || Recorder.IsDisposed)
+            {
+                Recorder = new DataRecorder(DB);
+                Recorder.Show();
+            }
+            else
+            {
+                Recorder.BringToFront();
+            }
+        }
     }
 }

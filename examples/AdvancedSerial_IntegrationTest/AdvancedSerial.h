@@ -12,7 +12,6 @@
 #ifndef __ADVANCEDSERIAL_H__
 #define __ADVANCEDSERIAL_H__
 
-#include "LinkedList.h"
 #include <Arduino.h>
 
 //MESAGE DECODER
@@ -57,9 +56,13 @@ class AdvancedSerial{
   
 //variables
 public:
+  const unsigned int maxSignalCount;
+  unsigned int signalCount = 0;
+  
 protected:
 private:
-  LinkedList<LoggedSignal> Signals = LinkedList<LoggedSignal>();
+  //LinkedList<LoggedSignal> Signals = LinkedList<LoggedSignal>();
+  LoggedSignal * Signals;
   HardwareSerial *SerialRef;
   int ReadBuffPos = 0;
   
@@ -72,7 +75,7 @@ public:
   void addSignal(String Name, int * value);
   
   void exec();
-  AdvancedSerial(HardwareSerial *SerialRef);
+  AdvancedSerial(HardwareSerial *Ref, unsigned int Size): maxSignalCount(Size){ SerialRef = Ref; Signals = new LoggedSignal[Size]; };
   ~AdvancedSerial();
   
   void TransmitSignalList(unsigned int MessageID);
