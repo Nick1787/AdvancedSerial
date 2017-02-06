@@ -1,6 +1,4 @@
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\AdvancedSerialClient.exe.config
-C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\AdvSerialDB.mdf
-C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\AdvSerialDB_log.ldf
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\AdvancedSerialClient.exe
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\AdvancedSerialClient.pdb
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Release\DynamicDataDisplay.dll
@@ -19,3 +17,4 @@ C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialCli
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Release\AdvancedSerialClient.csproj.GenerateResource.Cache
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Release\AdvancedSerialClient.exe
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Release\AdvancedSerialClient.pdb
+C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Release\AdvancedSerialClient.csprojResolveAssemblyReference.cache

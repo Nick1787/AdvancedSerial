@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{457F3B61-2DBF-403C-B060-E5EC02E8127B}|Default">
+  <MonoDevelop.Ide.ItemProperties.AdvancedSerialClient PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataRecorder.cs">
+    <Files>
+      <File FileName="DataPlotter.cs" Line="1" Column="1" />
+      <File FileName="DataRecorder.cs" Line="1" Column="1" />
+      <File FileName="DataRecorder.Designer.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

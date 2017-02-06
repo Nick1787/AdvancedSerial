@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Forms;
 
 namespace AdvancedSerial
 {
@@ -29,15 +30,23 @@ namespace AdvancedSerial
             //generate a unique filename
             string mdfName = "AdvSerialDB.mdf";
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string DBFilename = dir + "\\" + mdfName;
+            string DBFilename =  dir + "\\" + mdfName;
+            string DBName = System.IO.Path.GetFileNameWithoutExtension(DBFilename);
 
             //Create the database
-            string filename = Path.GetFileNameWithoutExtension(DBFilename);
+            if (!System.IO.File.Exists(mdfName))
+            {
+                CreateDatabase(DBName, DBFilename);
+            }
+            else
+            {
+                System.IO.File.Delete(DBFilename);
+                CreateDatabase(DBName, DBFilename);
+            }
 
-           
             SQLDB = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\AdvSerialDB.mdf;Integrated Security=True;MultipleActiveResultSets=true");
             SQLDB.Open();
-
+            
             //Delete any existing tables
             DataTable schema = SQLDB.GetSchema("Tables");
             List<string> TableNames = new List<string>();
@@ -50,6 +59,7 @@ namespace AdvancedSerial
             string createTable = "CREATE TABLE DBDATA(signal char(50), time FLOAT, value FLOAT );";
             SqlCommand SQLCMD2 = new SqlCommand(createTable, SQLDB);
             SQLCMD2.ExecuteNonQuery();
+            
         }
 
         //Request to Lock Database
@@ -272,7 +282,6 @@ namespace AdvancedSerial
             SQLCMD.ExecuteNonQuery();
         }
 
-
         public void Write(String ParamName, List<Tuple<Single,Single>> ParamData)
         {
             foreach( Tuple<Single,Single> Data in ParamData)
@@ -281,6 +290,60 @@ namespace AdvancedSerial
                 Write(ParamName, Data.Item1, Data.Item2);
             }
         }
+
+        public static bool CreateDatabase(string dbName, string dbFileName)
+        {
+            try
+            {
+                string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True");
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+
+                    String ldfName = System.IO.Path.GetDirectoryName(dbFileName) + "\\" + System.IO.Path.GetFileNameWithoutExtension(dbFileName) + "_log.ldf";
+                    if(System.IO.File.Exists(ldfName))
+                    {
+                        System.IO.File.Delete(ldfName);
+                    }
+                    DetachDatabase(dbName);
+                    cmd.CommandText = String.Format("CREATE DATABASE {0} ON (NAME = '{0}', FILENAME = '{1}')", dbName, dbFileName);
+                    cmd.ExecuteNonQuery();
+                }
+
+                if (File.Exists(dbFileName)) return true;
+                else return false;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        public static bool DetachDatabase(string dbName)
+        {
+            try
+            {
+                string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True");
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = String.Format("exec sp_detach_db '{0}'", dbName);
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
 
     }
 }

@@ -2,10 +2,6 @@
 *         File: AdvancedSerial.h
  *      Author: Nick Dodds <Nick1787@gmail.com>
  * Description: An Adnvancer Serial Interface for Interfacing with Arduino
- * ----------------------------------------------------------------
- *    Revision:
- *    02262015 - NRD - Initial Version
- * ----------------------------------------------------------------
  */
 
 
