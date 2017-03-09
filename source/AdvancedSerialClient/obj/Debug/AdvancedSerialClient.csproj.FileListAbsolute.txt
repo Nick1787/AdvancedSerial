@@ -39,3 +39,4 @@ C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialCli
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Debug\AdvancedSerialClient.DataRecorder.resources
 C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Debug\AdvancedSerialClient.DataPlotter.resources
+C:\Users\Nick1\OneDrive\Documents\GitHub\AdvancedSerial\source\AdvancedSerialClient\obj\Debug\AdvancedSerialClient.csprojResolveAssemblyReference.cache

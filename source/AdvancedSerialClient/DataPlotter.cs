@@ -57,7 +57,13 @@ namespace AdvancedSerialClient
             {
                 Title = "Advanced Serial Plotter",
                 //PlotType = PlotType.Cartesian,
-                Background = OxyColors.White
+                Background = OxyColors.White,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
+                LegendBorder = OxyColors.Black,
+                IsLegendVisible = true,
             }; 
 
             Plot.Model = DataPlot;
@@ -90,7 +96,10 @@ namespace AdvancedSerialClient
             Splitter.Size = new Size(this.Size.Width, this.Size.Height - toolStrip1.Size.Height);
             if (!(ShowNames))
             {
-                Splitter.SplitterDistance = this.Size.Width;
+                if (Splitter.Width > 20)
+                {
+                    Splitter.SplitterDistance = this.Size.Width;
+                }
                 Splitter.Panel2Collapsed = true;
                 Splitter.Panel2.Hide();
             }
@@ -98,7 +107,10 @@ namespace AdvancedSerialClient
             {
                 Splitter.Panel2Collapsed = false;
                 Splitter.Panel2.Show();
-                Splitter.SplitterDistance = this.Size.Width - lastSplitterDistance;
+                if (Splitter.Width > 20)
+                {
+                    Splitter.SplitterDistance = Math.Max(Splitter.Panel1MinSize, this.Size.Width - lastSplitterDistance);
+                }
             }
 
 
@@ -143,6 +155,14 @@ namespace AdvancedSerialClient
             }
         }
 
+        private void TB_XAxisTime_KeyPress(Object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                this.SelectNextControl(this.ActiveControl, true, true, true, true);
+            }
+        }
+
         private void TB_XAxisTime_Validating(Object sender, CancelEventArgs e)
         {
             String newText = TB_XAxisTime.Text;
@@ -167,11 +187,7 @@ namespace AdvancedSerialClient
             }
 
         }
-
-        private void TB_XAxisTime_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -230,6 +246,7 @@ namespace AdvancedSerialClient
                             if (Ser == null)
                             {
                                 Ser = new LineSeries();
+                                Ser.Title = paramNameCell.Value.ToString().Trim() ;
                                 Ser.Tag = rw;
                                 AddChartSeries(Ser);
                                 //Ser = new Series(rw.ToString());
@@ -257,7 +274,8 @@ namespace AdvancedSerialClient
                                 {
 
                                     LineSeries Ser2 = new LineSeries();
-                                    Ser2.Tag = rw;
+                                        Ser2.Title = paramNameCell.Value.ToString();
+                                        Ser2.Tag = rw;
 
                                     if (!(this.Plot.IsDisposed))
                                     {
@@ -350,6 +368,7 @@ namespace AdvancedSerialClient
                 DataPlot.Series.Add(Ser);
             }
             DataPlot.InvalidatePlot(true);
+           
         }
 
         private void UpdateSeriesData(LineSeries Ser, List<Tuple<Single, Single>> Data)
@@ -417,6 +436,27 @@ namespace AdvancedSerialClient
             {
                 btn_PauseRun.Text = "Pause";
             }
+        }
+
+        private void BTN_ShowLegend_Click(object sender, EventArgs e)
+        {
+            if(BTN_ShowLegend.Checked)
+            {
+                BTN_ShowLegend.Text = "Hide Legend";
+                DataPlot.IsLegendVisible = true;
+                DataPlot.InvalidatePlot(true);
+            }
+            else
+            {
+                BTN_ShowLegend.Text = "Show Legend";
+                DataPlot.IsLegendVisible = false;
+                DataPlot.InvalidatePlot(true);
+            }
+        }
+
+        private void TB_XAxisTime_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
